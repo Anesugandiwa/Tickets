@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('preview_image')->nullable();

@@ -13,6 +13,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/event',[EventController::class, 'index'])->name('events');
+Route::post('/event',[EventController::class, 'store'])->name('store');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
