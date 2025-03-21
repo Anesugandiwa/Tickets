@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogHeader, DialogFooter } from '@/components/ui/dialog';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
   import { Head, Link } from '@inertiajs/vue3'
   import AppLayout from '@/layouts/AppLayout.vue';
   import { type BreadcrumbItem } from '@/types';
   import { Button } from '@/components/ui/button';
-//   import Calendar from '@/components/ui/calendar/Calendar.vue';
+
   import { Calendar as CalendarIcon } from 'lucide-vue-next';
   import  {Calendar }  from '@/components/ui/calendar';
  
@@ -15,9 +16,10 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
   import { Input } from "@/components/ui/input";
   import { Label } from '@/components/ui/label';
   import DataTable from '@/components/DataTable.vue';
+  import { cn } from '@/lib/utils';
    
 
-  import {ref} from 'vue';
+  import {type Ref, ref} from 'vue';
 import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
 
 const columns = [
@@ -30,13 +32,17 @@ const columns = [
   function viewEvent(row: any) {
       console.log('Viewing event:', row.id)
   }
-  
+  const date = ref(new Date());
+
+
+
+
 const form = useForm({
     title:          '',
     description:    '',
     slug:           '',
-    start_date:      null as DateValue  | null,
-    end_date:        null as DateValue  | null,
+    start_date:      '',
+    end_date:        '',
     preview_image:  null as File | null,
     location:       '',
     total_tickets:  '',
@@ -48,23 +54,27 @@ const form = useForm({
     form.preview_image = target.files[0]
   }
 }
-const formatDate = (date: Date | null) => {
-  if (!date) return 'Pick a date';
-  return date.toLocaleDateString();
-};
+
  const submitForm =() =>{
-    const payload = {
-    ...form.data(),
-    start_date: form.start_date ? new Date(form.start_date).toISOString().split('T')[0] : null,
-    end_date: form.end_date ? new Date(form.end_date).toISOString().split('T')[0] : null,
-  };
-    form.post(route('events.store'),{
+
+    form.post(route('store'),{
         onSuccess:() =>{
             closeDialog();
             form.reset();
         },
     });
  };
+ const errors = ref({
+  title: '',
+  description: '',
+  slug: '',
+  start_date: '',
+  end_date: '',
+  preview_image: '',
+  location: '',
+  total_tickets: '',
+  is_priced: '',
+});
 
  const isDialogOpen = ref(false);
 
@@ -75,6 +85,7 @@ const formatDate = (date: Date | null) => {
  const closeDialog = () =>{
     isDialogOpen.value =false;
  }
+
  
  const breadcrumbs: BreadcrumbItem[] = [
       {
@@ -89,6 +100,8 @@ const formatDate = (date: Date | null) => {
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <Head title ="Add Events"/>
+
+        
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <CustomCard
@@ -127,11 +140,12 @@ const formatDate = (date: Date | null) => {
                             <Input 
                                 id="name" 
                                 type="text" 
-                                required autofocus :tabindex="1" 
+                                required
                                 autocomplete="title" 
                                 v-model="form.title" 
                                 placeholder="Enter Title" 
                             />
+                            <p v-if="errors.title" class="text-red-500 text-sm">{{ errors.title }}</p>
 
                         </div>
 
@@ -145,6 +159,9 @@ const formatDate = (date: Date | null) => {
                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focuse:ring-2 focus:ring-primary "
                                 rows="4"
                             />
+                            <p v-if="errors.description" class="text-red-500 text-sm">
+                                {{ errors.description }}
+                            </p>
                         </div>
                         <div>
                             <label for="slug" class="block mb-2 font-medium">Slug</label>
@@ -154,6 +171,10 @@ const formatDate = (date: Date | null) => {
                                 v-model="form.slug"
                                 class="w-full"
                             />
+                            <p v-if="errors.slug" class="text-red-500 text-sm">
+                                {{ errors.slug }}
+                            </p>
+                            
                         </div>
                         <div>
                             <label for="start_date" class="block mb-2 font-medium">Start Date</label>
@@ -163,24 +184,9 @@ const formatDate = (date: Date | null) => {
                                 placeholder="Enter start Date"
                                 class="w-full"
                             /> -->
-                            <Popover>
-                                <PopoverTrigger as-child>
-                                    <Button
-                                     variant="outline"
-                                     class="w-full justify-start text-left font-normal"
-                                     
-                                     >
-                                     <CalendarIcon class="mr-2 h-4 w-4"></CalendarIcon>
-                                     <span>{{ formatDate(form.start_date) }}</span>
-
-                                    </Button>
-
-                                </PopoverTrigger>
-                                <PopoverContent class="w-auto p-0">
-                                    <Calendar v-model="form.start_date" />
-                                </PopoverContent>
-                            </Popover>
-
+                            <VueDatePicker v-model="date" month-name-format="long" />
+                        
+                        
                         </div>
                         <div>
                             <label for="end_date" class="block mb-2 font-medium">End Date</label>
@@ -190,20 +196,7 @@ const formatDate = (date: Date | null) => {
                                 placeholder="Enter End Date"
                                 class="w-full"
                             /> -->
-                            <Popover>
-                                <PopoverTrigger as-child>
-                                    <Button
-                                        variant="outline"
-                                        class="w-full justify-start text-left font-normal"
-                                    >
-                                    <CalendarIcon class="mr-2 h-4 w-4" />
-                                    <span>{{ formatDate(form.end_date) }}</span>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent class="w-auto p-0">
-                                <Calendar v-model="form.end_date" />
-                            </PopoverContent>
-                        </Popover>
+                            <VueDatePicker v-model="date" month-name-format="long" />
                         </div>
                         <div>
                             <label for="preview_image" class="block mb-2 font-medium">Enter Image</label>
@@ -214,6 +207,9 @@ const formatDate = (date: Date | null) => {
                                 placeholder="Enter preview Image"
                                 class="w-full"
                             />
+                            <p v-if="errors.preview_image" class="text-red-500 text-sm mt-1">
+                                {{ errors.preview_image }}
+                            </p>
 
 
                         </div>
@@ -225,6 +221,9 @@ const formatDate = (date: Date | null) => {
                                 placeholder="Enter location "
                                 class="w-full"
                             />
+                            <p v-if="errors.location" class="text-red-500 text-sm mt-1">
+                                {{ errors.location }}
+                            </p>
 
 
                         </div>
@@ -236,6 +235,9 @@ const formatDate = (date: Date | null) => {
                                 placeholder="Enter Tickets"
                                 class="w-full"
                             />
+                            <p v-if="errors.total_tickets" class="text-red-500 text-sm mt-1">
+                                {{ errors.total_tickets }}
+                            </p>
 
 
                         </div>
@@ -248,6 +250,9 @@ const formatDate = (date: Date | null) => {
                                 class="w-full"
                             
                             />
+                            <p v-if="errors.is_priced" class="text-red-500 text-sm mt-1">
+                                {{ errors.is_priced }}
+                            </p>
 
 
                         </div>
@@ -258,7 +263,7 @@ const formatDate = (date: Date | null) => {
                         Cancel
                     </Button>
                     <Button
-                        @click=""
+                        @click="route('store') "
                         class="bg-[#67B446] text-white hover:bg-[#559c3a]"
                     >
                         Save Event

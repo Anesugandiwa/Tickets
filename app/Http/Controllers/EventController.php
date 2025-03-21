@@ -29,7 +29,7 @@ class EventController extends Controller
             'preview_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'location'=>'required|string|max:255',
             'total_tickets' =>'required|interger|min:1',
-            'is_priced' =>'required|boolean'
+            'is_priced' =>'required'
         ]);
 
         $event = Event::first::firstOrNew(['id' =>$request->id]);
@@ -45,7 +45,7 @@ class EventController extends Controller
 
         $event->title = $request->title;
         $event->description = $request->description;
-        $event->slug =Str::slug($request->title);
+        $event->slug =$request->slug;
         $event->start_date =$request->start_date;
         $event->end_date =$request->end_date;
         $event->location = $request->location;
@@ -60,12 +60,12 @@ class EventController extends Controller
 
 
     }
-    public function show(Event $event)
-    {
-        return inertia('Admin/Events/Show', [
-            'event' => $event->load(['tickets','purchases.ticket'])
-        ]);
-    }
+    // public function show(Event $event)
+    // {
+    //     return inertia('Admin/Events/Show', [
+    //         'event' => $event->load(['tickets','purchases.ticket'])
+    //     ]);
+    // }
     public function destroy(Event $event)
     {
         $event->delete();
