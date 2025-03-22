@@ -9,9 +9,11 @@ use App\Models\Event;
 class EventController extends Controller
 {
     public function index(){
+        $events = Event::all();
 
         return inertia('Admin/Events/event',[
-            $events = Event::all()
+            'events' => $events
+            
         ]);
     }
 
@@ -22,14 +24,14 @@ class EventController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'title' =>'required|string|max:225|min:5',
-            'description' =>'required|max:225|min:5',
-            'start_date' =>'required|date|after_or_equal:today',
-            'end_date' =>'required|date|after:start_date',
-            'preview_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'location'=>'required|string|max:255',
-            'total_tickets' =>'required|min:1',
-            'is_priced' =>'required'
+            'title'                 =>'required|string|max:225|min:5',
+            'description'           =>'required|max:225|min:5',
+            'start_date'            =>'required|date|after_or_equal:today',
+            'end_date'              =>'required|date|after:start_date',
+            'preview_image'         => 'required|image|mimes:jpeg,png,jpg,gif',
+            'location'              =>'required|string|max:255|min:3',
+            'total_tickets'         =>'required|min:1',
+            'is_priced'             =>'required'
         ]);
 
         $event = Event::firstOrNew(['id' =>$request->id]);
@@ -54,18 +56,18 @@ class EventController extends Controller
 
         $event->save();
 
-        return redirect(route('store'));
+        return redirect(route('admin.events.list'));
 
 
 
 
     }
-    // public function show(Event $event)
-    // {
-    //     return inertia('Admin/Events/Show', [
-    //         'event' => $event->load(['tickets','purchases.ticket'])
-    //     ]);
-    // }
+    public function show(Event $event)
+    {
+
+    }
+
+    
     public function destroy(Event $event)
     {
         $event->delete();

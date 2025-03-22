@@ -1,15 +1,15 @@
-<script setup lang="ts">
+<script setup  >
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 
 const columns = [
-    { title: 'ID', key: 'id' },
-    { title: 'Title', key: 'title' },
-    { title: 'Description', key: 'description' },
-    { title: 'Location', key: 'location' },
-    { title: 'Actions', key: 'actions', sortable: false },
+    { key: 'id', title: 'ID' },
+    { key: 'title', title: 'Title' },
+    { key: 'description', title: 'Description'  },
+    { key: 'location',  title: 'Location'},
+    { key: 'actions',  title: 'Actions'  },
 ]
 
 
@@ -26,12 +26,14 @@ const form = useForm({
     is_priced: '',
 })
 
-function handleFileUpload(event: Event) {
-    const target = event.target as HTMLInputElement
+function handleFileUpload(event) {
+    const target = event.target;
     if (target.files && target.files[0]) {
-        form.preview_image = target.files[0]
+        form.preview_image = target.files[0];
     }
 }
+
+
 
 const submitForm = () => {
     form.post(route('admin.events.store'), {
@@ -169,13 +171,33 @@ const closeDialog = () => (isDialogOpen.value = false)
             </v-dialog>
 
             <!-- Table -->
-            <v-card elevation="1" class="pa-4">
+            <!-- <v-card elevation="1" class="pa-4">
                 <v-data-table :headers="columns" :items="$page.props.events" class="mt-4">
-<!--                    <template #item.actions="{ item }">-->
-<!--                        <v-btn color="primary" @click="viewEvent(item)">View</v-btn>-->
-<!--                    </template>-->
+                   <template #item.actions="{ item }">
+                       <v-btn color="primary" @click="viewEvent(item)">View</v-btn>
+                   </template>
                 </v-data-table>
-            </v-card>
+            </v-card> -->
+            <div class="glass pa-3">
+                <v-data-table
+                    :headers="columns"
+                    :items="$page.props.events"
+                    :search="search"
+                >
+                    <template v-slot:item.actions="{ item }">
+                      <div class="dlex">
+                          <v-btn color="info" class="mx-1 no-uppercase" @click="viewEvents(item)">
+                              View
+                          </v-btn>
+
+                          <v-btn class="mx-1 no-uppercase" @click="viewUser(item)">
+                              Edit
+                          </v-btn>
+                      </div>
+                    </template>
+                </v-data-table>
+            </div>
+
         </v-container>
     </DefaultLayout>
 </template>
