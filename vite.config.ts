@@ -2,9 +2,10 @@ import vue from '@vitejs/plugin-vue';
 import autoprefixer from 'autoprefixer';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
-import tailwindcss from 'tailwindcss';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import ViteFonts from 'unplugin-fonts/vite'
 
 export default defineConfig({
     plugins: [
@@ -21,16 +22,40 @@ export default defineConfig({
                 },
             },
         }),
+        Vuetify(),
+        ViteFonts({
+            google: {
+                families: [{
+                    name: 'Roboto',
+                    styles: 'wght@100;300;400;500;700;900',
+                }],
+            },
+        }),
     ],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
         },
+        extensions: [
+            '.js',
+            '.json',
+            '.jsx',
+            '.mjs',
+            '.ts',
+            '.tsx',
+            '.vue',
+        ],
     },
     css: {
         postcss: {
-            plugins: [tailwindcss, autoprefixer],
+            plugins: [autoprefixer],
+        },
+
+        preprocessorOptions: {
+            sass: {
+                api: 'modern-compiler',
+            },
         },
     },
 });

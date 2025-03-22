@@ -12,8 +12,8 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/event',[EventController::class, 'index'])->name('events');
-Route::post('/event',[EventController::class, 'store'])->name('store');
+Route::get('/event',[EventController::class, 'index'])->name('admin.events.list');
+Route::post('/event',[EventController::class, 'store'])->name('admin.events.store');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

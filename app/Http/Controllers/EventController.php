@@ -9,7 +9,7 @@ use App\Models\Event;
 class EventController extends Controller
 {
     public function index(){
-        
+
         return inertia('Admin/Events/event',[
             $events = Event::all()
         ]);
@@ -17,7 +17,7 @@ class EventController extends Controller
 
     public function create(){
         return inertia('Admin/Events');
-        
+
     }
 
     public function store(Request $request){
@@ -28,16 +28,16 @@ class EventController extends Controller
             'end_date' =>'required|date|after:start_date',
             'preview_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'location'=>'required|string|max:255',
-            'total_tickets' =>'required|interger|min:1',
+            'total_tickets' =>'required|min:1',
             'is_priced' =>'required'
         ]);
 
-        $event = Event::first::firstOrNew(['id' =>$request->id]);
-        
+        $event = Event::firstOrNew(['id' =>$request->id]);
+
         if($request->hasFile('preview_image')) {
             $filePath = $request->file('preview_image')->store('images', 'public');
             $event->preview_image = $filePath;
-           
+
 
         } else {
             $event->preview_image = $request->preview_image;
