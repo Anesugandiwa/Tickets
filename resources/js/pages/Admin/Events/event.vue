@@ -26,24 +26,6 @@ const form = useForm({
     is_priced: '',
 })
 
-function handleFileUpload(event) {
-    const target = event.target;
-    if (target.files && target.files[0]) {
-        form.preview_image = target.files[0];
-    }
-}
-
-
-
-const submitForm = () => {
-    form.post(route('event.store'), {
-        onSuccess: () => {
-            closeDialog()
-            form.reset()
-        },
-    })
-}
-
 const errors = ref({
     title: '',
     description: '',
@@ -55,10 +37,81 @@ const errors = ref({
     total_tickets: '',
     is_priced: '',
 })
-
+// initializing the state of the DFialog
 const isDialogOpen = ref(false)
-const openDialog = () => (isDialogOpen.value = true)
-const closeDialog = () => (isDialogOpen.value = false)
+const isEditing = ref(false)
+
+// Open Dialog for new Event 
+const openDialog = () => {
+    isEditing.value =false
+    form.reset()
+   isDialogOpen.value = true
+}
+// closing the Dialog
+const closeDialog = () => {
+    isDialogOpen.value = false
+    form.reset()
+}
+
+
+
+function handleFileUpload(event) {
+    const target = event.target;
+    if (target.files && target.files[0]) {
+        form.preview_image = target.files[0];
+    }
+}
+
+
+
+const submitForm =() =>{
+    if (isEditing.value) {
+        form.put(route('event.update', form.id), {
+            onSuccess: () => {
+                closeDialog()
+            },
+            onError: (newErrors) =>{
+                errors.value =newErrors
+            }
+
+        })
+    } else {
+        form.post(route('event.store'), {
+            onSuccess: () =>{
+                closeDialog()
+            },
+             onError: (newErrors) => {
+                errors.value = newErrors
+
+             }
+        })
+    }
+}
+
+const editEvent = (event) =>{
+  
+        isEditing.value          =       true
+        form.id             =       event.id
+        form.title          =        event.title
+        form.description =          event.description
+        form.slug =                 event.slug
+        form.start_date =           event.start_date
+        form.end_date =             event.end_date
+        form.location =             event.location
+        form.total_tickets  =      event.total_tickets
+        form.is_priced =           event.is_priced
+        
+        isDialogOpen.value =        true
+    }
+
+const viewEvent = (event) => {
+    console.log('Viewing event:', event)
+}
+
+
+
+
+
 
 </script>
 <template>
@@ -80,7 +133,9 @@ const closeDialog = () => (isDialogOpen.value = false)
             <!-- Dialog -->
             <v-dialog v-model="isDialogOpen" max-width="800">
                 <v-card>
-                    <v-card-title class="text-h6">Create New Event</v-card-title>
+                    <v-card-title class="text-h6">
+                     {{ isEditing? 'Edit Event' : 'Create New Event' }}
+                    </v-card-title>
                     <v-card-text>
                         <v-form @submit.prevent="submitForm">
                             <v-row dense>
@@ -165,39 +220,31 @@ const closeDialog = () => (isDialogOpen.value = false)
                     <v-card-actions>
                         <v-spacer />
                         <v-btn color="red" @click="closeDialog">Cancel</v-btn>
-                        <v-btn color="green" @click="submitForm">Save Event</v-btn>
+                        <v-btn color="green" @click="submitForm">
+                            {{ isEditing? 'Update Event' : 'Save Event' }}
+                        </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-
-            <!-- Table -->
-            <!-- <v-card elevation="1" class="pa-4">
-                <v-data-table :headers="columns" :items="$page.props.events" class="mt-4">
-                   <template #item.actions="{ item }">
-                       <v-btn color="primary" @click="viewEvent(item)">View</v-btn>
-                   </template>
-                </v-data-table>
-            </v-card> -->
+            
             <div class="glass pa-3">
                 <v-data-table
                     :headers="columns"
                     :items="$page.props.events"
                     :search="search"
                 >
-                    <template v-slot:item.actions="{ item }">
-                      <div class="dlex">
-                          <v-btn color="info" class="mx-1 no-uppercase" @click="viewEvents(item)">
-                              View
-                          </v-btn>
-
-                          <v-btn class="mx-1 no-uppercase" @click="viewUser(item)">
-                              Edit
-                          </v-btn>
-                      </div>
-                    </template>
-                </v-data-table>
-            </div>
-
-        </v-container>
+                <template v-slot:item.actions="{ item }">
+                    <div class="d-flex">
+                        <v-btn color="info" class="mx-1 no-uppercase" @click="viewEvent(item)">
+                            View
+                        </v-btn>
+                        <v-btn class="mx-1 no-uppercase" @click="editEvent(item)">
+                            Edit
+                        </v-btn>
+                    </div>
+                </template>
+            </v-data-table>
+        </div>
+    </v-container>
     </DefaultLayout>
 </template>

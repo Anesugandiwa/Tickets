@@ -56,15 +56,55 @@ class EventController extends Controller
 
         $event->save();
 
-        return redirect(route('admin.events.list'));
+        return redirect(route('event.index'));
 
 
 
 
     }
+
     public function show(Event $event)
     {
 
+    }
+    public function update(Request $request, $id){
+
+        $request-> validate([
+            'title'                 =>'required|string|max:225|min:5',
+            'description'           =>'required|max:225|min:5',
+            'start_date'            =>'required|date|after_or_equal:today',
+            'end_date'              =>'required|date|after:start_date',
+            'preview_image'         => 'required|image|mimes:jpeg,png,jpg,gif',
+            'location'              =>'required|string|max:255|min:3',
+            'total_tickets'         =>'required|min:1',
+            'is_priced'             =>'required'
+            
+        ]);
+
+        $event =Event::findOrFail($id);
+
+        $event->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'slug' => $request->slug,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'location' => $request->location,
+            'total_tickets' => $request->total_tickets,
+            'is_priced' => $request->is_priced,
+        ]);
+
+        if ($request->hasFile('preview_image')) {
+            $imagePath = $request->file('preview_image')->store('events', 'public');
+            $event->preview_image = $imagePath;
+
+            $event->save();
+        }
+
+        return redirect()->route('event.index')->with('success', 'Event Updated successfully!');
+
+
+        
     }
 
     
