@@ -36,7 +36,7 @@ function handleFileUpload(event) {
 
 
 const submitForm = () => {
-    form.post(route('admin.events.store'), {
+    form.post(route('event.store'), {
         onSuccess: () => {
             closeDialog()
             form.reset()

@@ -16,7 +16,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Events',
-        href:route('admin.events.list'),
+        href:route('event.index'),
     },
 ];
 
