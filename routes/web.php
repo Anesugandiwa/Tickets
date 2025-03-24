@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrganiserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -16,6 +17,7 @@ Route::group([
     'prefix' => 'admin',
 ], function(){
     Route::resource('/event',EventController::class);
+    Route::resource('/organiser',OrganiserController::class);
 
 });
 

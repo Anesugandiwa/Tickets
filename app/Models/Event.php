@@ -28,4 +28,9 @@ class Event extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function organisers()
+    {
+        return $this->hasMany(Organiser::class);
+    }
 }

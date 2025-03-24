@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
+
 
 
 const columns = [
@@ -88,6 +90,20 @@ const submitForm =() =>{
     }
 }
 
+const deletEvent = (event) => {
+    if (confirm('Are  you sure you want to delete this event')){
+        form.delete(route('event.destroy', event.id), {
+            onSuccess: () =>{
+                closeDialog()
+            },
+            onError: (newErrors) =>{
+                errors.value =newErrors
+
+            }
+        })
+    }
+}
+
 const editEvent = (event) =>{
   
         isEditing.value          =       true
@@ -104,19 +120,16 @@ const editEvent = (event) =>{
         isDialogOpen.value =        true
     }
 
+
 const viewEvent = (event) => {
     console.log('Viewing event:', event)
 }
 
-
-
-
-
-
 </script>
 <template>
-    <DefaultLayout >
+    <AdminLayout >
         <Head title="Add Events" />
+        
 
         <v-container>
             <v-row class="mb-4">
@@ -241,10 +254,13 @@ const viewEvent = (event) => {
                         <v-btn class="mx-1 no-uppercase" @click="editEvent(item)">
                             Edit
                         </v-btn>
+                        <v-btn color="error" class="mx-1 no-uppercase" @click="deletEvent(item)">
+                            Delete
+                        </v-btn>
                     </div>
                 </template>
             </v-data-table>
         </div>
     </v-container>
-    </DefaultLayout>
+    </AdminLayout>
 </template>

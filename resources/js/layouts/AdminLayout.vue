@@ -7,40 +7,24 @@ const drawer = ref(null)
 const menues = ref([
     {
         name: "Dashboard",
-        path: "",
+        path: route('dashboard'),
         icon: "mdi-monitor-dashboard",
         id: 1,
     },
     {
-        name: "Shipments",
-        path: "",
-        icon: "mdi-truck",
+        name: "Events",
+        path: route('event.index'),
+        icon: "",
         id: 22,
     },
     {
-        name: "Users Management",
-        path: "",
-        icon: "mdi-account-group",
+        name: "Organisers",
+        path: route('organiser.index'),
+        icon:"",
         id: 2,
-    },
-    {
-        name: "Suppliers List",
-        path: "",
-        icon: "mdi-factory",
-        id: 3,
-    },
-    {
-        name: "Clients List",
-        path: "",
-        icon: "mdi-account-switch",
-        id: 4,
-    },
-    {
-        name: "Countries",
-        path: "",
-        icon: "mdi-earth",
-        id: 5,
-    },
+    }
+
+
 ]);
 
 function logout() {
@@ -60,7 +44,7 @@ function logout() {
             <v-list density="compact">
                 <div class="mb-1 mx-1  d-flex">
                     <div>
-                        <img  height="55" src="/images/logo.png"  alt="Logo"/>
+                        <img  height="55" src="/images/logo.jpg"  alt="Logo"/>
                     </div>
                    <div>
                        <b>{{ $page.props.auth.user.name }} </b> <br />
