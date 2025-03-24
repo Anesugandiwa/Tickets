@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import InputError from '@/components/InputError.vue';
-import TextLink from '@/components/TextLink.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+
+defineProps<{
+    status?: string;
+    canResetPassword: boolean;
+}>();
 
 const form = useForm({
-    name: '',
+    name:'',
     email: '',
     password: '',
     password_confirmation: '',
+    remember: false,
 });
 
 const submit = () => {
@@ -23,61 +23,95 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthBase title="Create an account" description="Enter your details below to create your account">
-        <Head title="Register" />
+    <DefaultLayout>
+        <Head title="Register"/>
+        <v-container>
+            <v-form @submit.prevent="submit" class="mt-15">
+                <v-card class="mx-auto glass" max-width="500">
+                    <v-card-title class="my-5">
+                        Registration Form
+                    </v-card-title>
 
-        <form @submit.prevent="submit" class="flex flex-col gap-6">
-            <div class="grid gap-6">
-                <div class="grid gap-2">
-                    <Label for="name">Name</Label>
-                    <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" v-model="form.name" placeholder="Full name" />
-                    <InputError :message="form.errors.name" />
-                </div>
+                    <v-card-text>
+                        <v-text-field
+                            id="name"
+                            label="Name"
+                            required
+                            autofocus
+                            :tabindex="1"
+                            autocomplete="name"
+                            v-model="form.name"
+                            placeholder="Full Name"
+                            :error-messages="form.errors.name"
+                        />
+                        <v-text-field
+                            id="email"
+                            type="email"
+                            label="Email address"
+                            required
+                            autofocus
+                            :tabindex="1"
+                            autocomplete="email"
+                            v-model="form.email"
+                            placeholder="email@example.com"
+                            :error-messages="form.errors.email"
+                        />
 
-                <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input id="email" type="email" required :tabindex="2" autocomplete="email" v-model="form.email" placeholder="email@example.com" />
-                    <InputError :message="form.errors.email" />
-                </div>
 
-                <div class="grid gap-2">
-                    <Label for="password">Password</Label>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        :tabindex="3"
-                        autocomplete="new-password"
-                        v-model="form.password"
-                        placeholder="Password"
-                    />
-                    <InputError :message="form.errors.password" />
-                </div>
+                        <div class="d-flex align-center ">
+                            <div  :tabindex="3">
+                                <v-checkbox label="Remember me" id="remember" v-model:checked="form.remember" :tabindex="4" />
+                            </div>
+                            <v-spacer/>
+                            <div v-if="canResetPassword" :href="route('password.request')"  :tabindex="5">
+                                Forgot password?
+                            </div>
+                        </div>
+                        <v-text-field
+                            id="password"
+                            type="password"
+                            required
+                            label="Password"
+                            :tabindex="2"
+                            autocomplete="current-password"
+                            v-model="form.password"
+                            placeholder="Password"
+                            :error-messages="form.errors.password"
+                        />
+                        <v-text-field
+                       
+                            id="password_confirmation"
+                            type="password"
+                            required
+                            label="Confirm Password"
+                            :tabindex="4"
+                            autocomplete="new-password"
+                            v-model="form.password_confirmation"
+                            placeholder="Confirm password"
+                            :error-messages="form.errors.password_confirmation"
+                        />
+                    </v-card-text>
+                    <v-card-actions>
+                        <!-- <v-btn rounded size="x-large" type="submit" class="no-uppercase" block variant="elevated" :tabindex="4" :loading="form.processing">
+                            Log in
+                        </v-btn> -->
+                        <v-btn rounded size="x-large" type="submit" class="no-uppercase" block variant="elevated" :tabindex="4" :loading="form.processing">
+                            Create account
 
-                <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
-                    <Input
-                        id="password_confirmation"
-                        type="password"
-                        required
-                        :tabindex="4"
-                        autocomplete="new-password"
-                        v-model="form.password_confirmation"
-                        placeholder="Confirm password"
-                    />
-                    <InputError :message="form.errors.password_confirmation" />
-                </div>
+                        </v-btn>
+                        
+                    </v-card-actions>
 
-                <Button type="submit" class="mt-2 w-full" tabindex="5" :disabled="form.processing">
-                    <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Create account
-                </Button>
-            </div>
+                    <v-card-text>
+                        Already have an account?
+                        <InertiaLink :href="route('login')" >
+                            <v-btn class="no-uppercase" variant="text" :tabindex="5">LogIn</v-btn>
+                        </InertiaLink>
+                    </v-card-text>
+                </v-card>
 
-            <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
-                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Log in</TextLink>
-            </div>
-        </form>
-    </AuthBase>
+
+            </v-form>
+        </v-container>
+    </DefaultLayout>
 </template>

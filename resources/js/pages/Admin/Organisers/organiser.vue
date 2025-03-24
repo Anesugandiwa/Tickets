@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
+import Swal from 'sweetalert2'
 
 const columns =[
     { key: 'id', title: 'ID' },
@@ -50,6 +51,7 @@ const submitData =() =>{
         form.put(route('oganiser.update', form.id),{
             onSuccess:() =>{
                 closeDialog()
+                Swal.fire('Success!', 'Organiser updated successfully.','success')
             },
             onError: (newErrors) => {
                 errors.value =newErrors
@@ -61,6 +63,7 @@ const submitData =() =>{
         form.post(route('organiser.store'),{
             onSuccess:() =>{
                 closeDialog()
+                Swal.fire('Success','Organiser Created successfully', 'success')
             },
             onError: (newErrors) => {
                 errors.value = newErrors
@@ -81,17 +84,36 @@ const editOrganiser = (organiser) => {
     isDialogOpen.value =true
 }
 const deleteOrganiser = (organiser) => {
-    if (confirm('Are  you sure you want to delete this organiser')){
-        form.delete(route('organiser.destroy', organiser.id), {
-            onSuccess: () =>{
-                closeDialog()
-            },
-            onError: (newErrors) =>{
-                errors.value =newErrors
+    Swal.fire({
+        title: 'Are you sure you want to delete the record?',
+        text: "You won't be able to revert this!",
+        icon:'warning',
+        showCancelButton:true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Yes delete it!"
+    }).then((result) =>{
+        if (result.isConfirmed){
+            form.delete(route('organiser.destroy', organiser.id), {
+                onsuccess: () => {
+                    Swal.fire(
+                        'Deleted!',
+                        'Organiser has been deleted.',
+                        'success'
+                    )
+                },
+                onError: () =>{
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong.',
+                        'error'
+                    )
+                }
+            })
+        }
+    })
 
-            }
-        })
-    }
+    
 }
 </script>
 <template>

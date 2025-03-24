@@ -22,6 +22,7 @@ const submit = () => {
 
 <template>
     <DefaultLayout>
+        
         <v-container>
             <v-form @submit.prevent="submit" class="mt-15">
                 <v-card class="mx-auto glass" max-width="500">
@@ -82,5 +83,6 @@ const submit = () => {
 
             </v-form>
         </v-container>
+   
     </DefaultLayout>
 </template>
