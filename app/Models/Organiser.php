@@ -15,4 +15,8 @@ class Organiser extends Model
         'organization_name',
         'profile_image'
     ];
+
+    public function events(){
+        return $this->belongsToMany(Event::class,'event_organiser');
+    }
 }

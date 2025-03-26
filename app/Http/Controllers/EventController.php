@@ -31,7 +31,8 @@ class EventController extends Controller
             'preview_image'         => 'required|image|mimes:jpeg,png,jpg,gif',
             'location'              =>'required|string|max:255|min:3',
             'total_tickets'         =>'required|min:1',
-            'is_priced'             =>'required'
+            'is_priced'             =>'required',
+            
         ]);
 
         $event = Event::firstOrNew(['id' =>$request->id]);
@@ -47,14 +48,17 @@ class EventController extends Controller
 
         $event->title = $request->title;
         $event->description = $request->description;
-        $event->slug =$request->slug;
+        $event->slug = Str::slug($request->title);
         $event->start_date =$request->start_date;
         $event->end_date =$request->end_date;
         $event->location = $request->location;
         $event->total_tickets = $request->total_tickets;
         $event->is_priced = $request->is_priced;
+        $event->organisers =$request->organisers;
 
+        $event->organisers()->sync($request->organiser_ids);
         $event->save();
+
 
         return redirect(route('event.index'));
 
@@ -82,7 +86,8 @@ class EventController extends Controller
             'preview_image'         => 'required|image|mimes:jpeg,png,jpg,gif',
             'location'              =>'required|string|max:255|min:3',
             'total_tickets'         =>'required|min:1',
-            'is_priced'             =>'required'
+            'is_priced'             =>'required',
+            'organisers'            =>'required|array'
             
         ]);
 
@@ -91,12 +96,13 @@ class EventController extends Controller
         $event->update([
             'title' => $request->title,
             'description' => $request->description,
-            'slug' => $request->slug,
+            
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'location' => $request->location,
             'total_tickets' => $request->total_tickets,
             'is_priced' => $request->is_priced,
+            'organisers' =>$request->organisers,
         ]);
 
         if ($request->hasFile('preview_image')) {

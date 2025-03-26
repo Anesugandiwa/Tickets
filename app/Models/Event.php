@@ -31,6 +31,6 @@ class Event extends Model
 
     public function organisers()
     {
-        return $this->hasMany(Organiser::class);
+        return $this->belongsToMany(Organiser::class, 'event_organiser');
     }
 }

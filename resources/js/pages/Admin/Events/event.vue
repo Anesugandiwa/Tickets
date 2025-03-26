@@ -12,6 +12,7 @@ const columns = [
     { key: 'title', title: 'Title' },
     { key: 'description', title: 'Description'  },
     { key: 'location',  title: 'Location'},
+    { key: 'organisers',  title: 'Organisers'},
     { key: 'actions',  title: 'Actions'  },
 ]
 
@@ -20,25 +21,27 @@ const columns = [
 const form = useForm({
     title: '',
     description: '',
-    slug: '',
+    
     start_date: '',
     end_date: '',
     preview_image: null,
     location: '',
     total_tickets: '',
     is_priced: '',
+    organisers: [], 
 })
 
 const errors = ref({
     title: '',
     description: '',
-    slug: '',
+    organisers:'',
     start_date: '',
     end_date: '',
     preview_image: '',
     location: '',
     total_tickets: '',
     is_priced: '',
+    
 })
 // initializing the state of the DFialog
 const isDialogOpen = ref(false)
@@ -133,12 +136,13 @@ const editEvent = (event) =>{
         form.id             =       event.id
         form.title          =        event.title
         form.description =          event.description
-        form.slug =                 event.slug
+       
         form.start_date =           event.start_date
         form.end_date =             event.end_date
         form.location =             event.location
         form.total_tickets  =      event.total_tickets
         form.is_priced =           event.is_priced
+        form.organisers = event.organisers
         
         isDialogOpen.value =        true
     }
@@ -193,13 +197,7 @@ const viewEvent = (event) => {
                                     />
                                 </v-col>
 
-                                <v-col cols="12" md="6">
-                                    <v-text-field
-                                        label="Slug"
-                                        v-model="form.slug"
-                                        :error-messages="errors.slug"
-                                    />
-                                </v-col>
+
 
                                 <v-col cols="12" md="6">
                                     <v-text-field
@@ -249,6 +247,18 @@ const viewEvent = (event) => {
                                         v-model="form.is_priced"
                                         :error-messages="errors.is_priced"
                                     />
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-select
+                                        v-model="form.organisers"
+                                        :items="$page.props.organiser"
+                                        item-title="name"
+                                        item-value="id"
+                                        label="Organisers"
+                                        multiple
+                                        :error-messages="errors.organisers"
+                                    />
+
                                 </v-col>
                             </v-row>
                         </v-form>

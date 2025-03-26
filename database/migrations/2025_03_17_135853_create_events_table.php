@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->integer('total_tickets');
             $table->boolean('is_priced')->default(1);
+            
             $table->timestamps();
         });
     }
