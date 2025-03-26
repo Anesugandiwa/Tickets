@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 
+
 class TicketController extends Controller
 {
     //
     public function index(){
+
         
     }
 
@@ -28,13 +30,13 @@ class TicketController extends Controller
         $ticket->name               = $request->name;
         
 
-        if($request->hasFile('image')) {
-            $filePath = $request->file('image')->store('images', 'public');
-            $ticket->image = $filePath;
+        if ($request->hasFile('image')) {
 
+            $ticket->image   = $this->uploadFile($request->image,'/storage/tickets/');
 
-        } else {
-            $ticket->image = $request->image;
+        }else{
+
+            $ticket->image             = $request->image;
         }
         $ticket->total_available        = $request->total_available;
         $ticket->price                  =$request->price;
@@ -46,5 +48,15 @@ class TicketController extends Controller
             'title'       => 'Ticket Details Saved',
         ]);
 
+    }
+
+    public function destroy(Ticket $ticket){
+        $ticket ->delete();
+
+        return redirect()->back()->with('message', [
+            'type'        => 'success',
+            'description' => '',
+            'title'       => 'Ticket Deleted',
+        ]);
     }
 }
