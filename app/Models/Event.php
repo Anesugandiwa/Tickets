@@ -21,7 +21,7 @@ class Event extends Model
 
     public function tickets(){
         
-        return $this->hasMany(Tickets::class);
+        return $this->hasMany(Ticket::class);
     }
 
     public function purchases()

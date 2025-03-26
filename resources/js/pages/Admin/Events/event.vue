@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
+import { router } from '@inertiajs/vue3';
 import Swal from 'sweetalert2'
 
 
@@ -144,7 +145,7 @@ const editEvent = (event) =>{
 
 
 const viewEvent = (event) => {
-    console.log('Viewing event:', event)
+    router.visit(route('event.show', event.id));
 }
 
 </script>

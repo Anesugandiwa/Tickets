@@ -65,6 +65,11 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
+        $event->load('tickets', 'purchases');
+        
+        return inertia('Admin/Events/show', [
+            'event' => $event
+        ]);
 
     }
     public function update(Request $request, $id){
