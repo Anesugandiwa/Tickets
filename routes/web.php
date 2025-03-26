@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrganiserController;
+use App\Http\Controllers\TicketController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -18,6 +19,7 @@ Route::group([
 ], function(){
     Route::resource('/event',EventController::class);
     Route::resource('/organiser',OrganiserController::class);
+    Route::resource('/tickets',TicketController::class);
 
 });
 

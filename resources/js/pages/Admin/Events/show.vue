@@ -63,6 +63,7 @@
                                                 cover
                                                 height="500"
                                                 :src="$page.props.event.preview_image"
+                                                alt="Event Image"
                                             />
                                         </v-col>
                                         <v-col cols="12" sm="8">
