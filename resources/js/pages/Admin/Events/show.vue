@@ -243,11 +243,11 @@
 </template>
 
 <script>
-// import moment from "moment";
+import moment from "moment";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 
 import AddTicket from '@/components/AddTicket.vue'
-// import {displayDate} from "../../../Composables/Dates.js";
+import {displayDate} from "../../../Composables/Dates.js";
     export default {
         components: {
             AddTicket,
@@ -282,36 +282,36 @@ import AddTicket from '@/components/AddTicket.vue'
             }
         },
 
-        // methods:{
-        //     displayDate,
+         methods:{
+             displayDate,
 
-        //     goodDate(date){
-        //         return moment(date).format("d-MMMM-YYYY");
-        //     },
+             goodDate(date){
+                 return moment(date).format("d-MMMM-YYYY");
+             },
 
-        //     deleteTicket(ticket){
-        //         this.$swal.fire({
-        //             title: "Are you sure you want to delete this Ticket?",
-        //             icon: 'question',
-        //             showDenyButton: true,
-        //             confirmButtonText: "Delete",
-        //             denyButtonText: `Cancel`,
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
+             deleteTicket(ticket){
+                 this.$swal.fire({
+                     title: "Are you sure you want to delete this Ticket?",
+                     icon: 'question',
+                     showDenyButton: true,
+                     confirmButtonText: "Delete",
+                     denyButtonText: `Cancel`,
+                 }).then((result) => {
+                     if (result.isConfirmed) {
 
-        //                 this.$inertia.visit(route('admin.tickets.destroy', ticket), {
-        //                     method: 'delete',
-        //                     onSuccess:()=>{
-        //                         this.$swal.fire({
-        //                             title: "Ticket Deleted Successfully",
-        //                             icon: 'success',
-        //                         })
-        //                     }
-        //                 });
-        //             }
-        //         });
-        //     }
+                         this.$inertia.visit(route('admin.tickets.destroy', ticket), {
+                             method: 'delete',
+                             onSuccess:()=>{
+                                 this.$swal.fire({
+                                     title: "Ticket Deleted Successfully",
+                                     icon: 'success',
+                                 })
+                             }
+                         });
+                     }
+                 });
+             }
 
-        // }
+         }
     }
 </script>
