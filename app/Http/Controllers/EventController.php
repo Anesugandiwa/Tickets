@@ -4,21 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Organiser;
+use Illuminate\Support\Str;
 
 
 class EventController extends Controller
 {
     public function index(){
-        $events = Event::all();
-
+       $events = Event::with(['organisers' => function ($query) 
+        {
+            $query->select( 'name');
+        }])->get();
+        
         return inertia('Admin/Events/event',[
-            'events' => $events
+            'events' => $events,
+            'organisers' => Organiser::all()
             
         ]);
     }
 
     public function create(){
-        return inertia('Admin/Events');
+
+        $organisers = Organiser::all();
+        return response()->json($organisers);
+        // inertia('Admin/Events');
 
     }
 
@@ -32,7 +41,9 @@ class EventController extends Controller
             'location'              =>'required|string|max:255|min:3',
             'total_tickets'         =>'required|min:1',
             'is_priced'             =>'required',
-            
+            'organisers'            => 'required|array',
+            'organisers.*'          => 'exists:organisers,id',
+           
         ]);
 
         $event = Event::firstOrNew(['id' =>$request->id]);
@@ -56,8 +67,12 @@ class EventController extends Controller
         $event->is_priced = $request->is_priced;
         $event->organisers =$request->organisers;
 
-        $event->organisers()->sync($request->organiser_ids);
+    
         $event->save();
+
+        $event->organisers()->sync($request->organiser_ids);
+
+
 
 
         return redirect(route('event.index'));

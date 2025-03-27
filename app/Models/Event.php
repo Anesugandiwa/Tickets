@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    //
+    protected $casts = [
+        'organisers' => 'array',
+    ];
     protected $fillable = [
         'title',
         'description',
@@ -31,6 +33,6 @@ class Event extends Model
 
     public function organisers()
     {
-        return $this->belongsToMany(Organiser::class, 'event_organiser');
+        return $this->belongsToMany(Organiser::class, 'event_organiser', 'event_id','organiser_id');
     }
 }

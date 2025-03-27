@@ -1,10 +1,24 @@
 <script setup  >
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
 import { router } from '@inertiajs/vue3';
+import axios from 'axios'
 import Swal from 'sweetalert2'
+
+const organisersList = ref([])
+onMounted(async () => {
+    try {
+        const response = await axios.get(route('organisers.index')) 
+        organisersList.value = response.data
+    } catch (error) {
+        console.error('Error fetching organisers:', error)
+    }
+})
+
+
+
 
 
 const columns = [
@@ -71,6 +85,7 @@ function handleFileUpload(event) {
 
 
 const submitForm =() =>{
+    
     if (isEditing.value) {
         form.put(route('event.update', form.id), {
             onSuccess: () => {
@@ -251,9 +266,9 @@ const viewEvent = (event) => {
                                 <v-col cols="12" md="6">
                                     <v-select
                                         v-model="form.organisers"
-                                        :items="$page.props.organiser"
+                                        :items="$page.props.organisers"
                                         item-title="name"
-                                        item-value="id"
+                                        item-value="name"
                                         label="Organisers"
                                         multiple
                                         :error-messages="errors.organisers"
