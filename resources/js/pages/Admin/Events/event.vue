@@ -42,7 +42,7 @@ const form = useForm({
     location: '',
     total_tickets: '',
     is_priced: '',
-    organisers: [], 
+    organisers: null, 
 })
 
 const errors = ref({
@@ -268,7 +268,7 @@ const viewEvent = (event) => {
                                         v-model="form.organisers"
                                         :items="$page.props.organisers"
                                         item-title="name"
-                                        item-value="name"
+                                        item-value="id"
                                         label="Organisers"
                                         multiple
                                         :error-messages="errors.organisers"
@@ -294,6 +294,12 @@ const viewEvent = (event) => {
                     :items="$page.props.events"
                     :search="search"
                 >
+
+                <template v-slot:item.organisers="{ item }">
+                    <v-chip v-if="item.organisers" v-for="organiser in item.organisers" :key="organiser.id">
+                        {{  organiser.name }}
+                    </v-chip>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <div class="d-flex">
                         <v-btn color="info" class="mx-1 no-uppercase" @click="viewEvent(item)">

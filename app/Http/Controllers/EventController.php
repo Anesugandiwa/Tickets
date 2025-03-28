@@ -11,10 +11,7 @@ use Illuminate\Support\Str;
 class EventController extends Controller
 {
     public function index(){
-       $events = Event::with(['organisers' => function ($query) 
-        {
-            $query->select( 'name');
-        }])->get();
+       $events = Event::with(['organisers'])->get();
         
         return inertia('Admin/Events/event',[
             'events' => $events,
@@ -42,7 +39,6 @@ class EventController extends Controller
             'total_tickets'         =>'required|min:1',
             'is_priced'             =>'required',
             'organisers'            => 'required|array',
-            'organisers.*'          => 'exists:organisers,id',
            
         ]);
 
@@ -70,7 +66,7 @@ class EventController extends Controller
     
         $event->save();
 
-        $event->organisers()->sync($request->organiser_ids);
+        $event->organisers()->sync($request->organisers);
 
 
 

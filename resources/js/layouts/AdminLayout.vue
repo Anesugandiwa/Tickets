@@ -14,13 +14,13 @@ const menues = ref([
     {
         name: "Events",
         path: route('event.index'),
-        icon: "",
+        icon: "mdi-calendar-text",
         id: 22,
     },
     {
         name: "Organisers",
         path: route('organiser.index'),
-        icon:"",
+        icon:"mdi-account-multiple",
         id: 2,
     }
 
