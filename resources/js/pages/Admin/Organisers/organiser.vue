@@ -124,7 +124,7 @@ const deleteOrganiser = (organiser) => {
                 <v-card class="pa-4" elevation="1">
                     <v-row align="center" justify="space-between">
                         <h1 class="font-weight bold text-h6">Organisers</h1>
-                        <v-btn color="succes" @click="isDialogOpen = !isDialogOpen"> Add Organiser</v-btn>
+                        <v-btn color="success" @click="isDialogOpen = !isDialogOpen"> Add Organiser</v-btn>
 
                     </v-row>
 
