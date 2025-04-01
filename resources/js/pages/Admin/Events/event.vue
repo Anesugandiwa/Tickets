@@ -184,6 +184,12 @@ const viewEvent = (event) => {
                     </v-card>
                 </v-col>
             </v-row>
+            <v-row class="mb-4">
+                <v-col>
+                    <Chart :labels="labels" :dataset="dataset" />
+                </v-col>
+            </v-row>
+
 
             <!-- Dialog -->
             <v-dialog v-model="isDialogOpen" max-width="800">

@@ -7,6 +7,9 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
 import vuetify from './plugins/vuetify'
+
+import VueApexCharts from "vue3-apexcharts";
+
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 const options = {
@@ -37,6 +40,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify)
+            .use(VueApexCharts)
             .component('InertiaLink', Link)
             .component('Head', Head)
             .use(VueSweetalert2,options)

@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrganiserController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PagesController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -22,6 +23,7 @@ Route::group([
     Route::resource('/organiser',OrganiserController::class);
     Route::resource('/tickets',TicketController::class);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/chart',[PagesController::class,'chart'])->name('getChart');
 
 });
 // routes/web.php

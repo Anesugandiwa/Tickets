@@ -8,19 +8,25 @@ use App\Models\Organiser;
 use Illuminate\Support\Str;
 
 
+
 class EventController extends Controller
 {
 
     public function index(){
+         
        $events = Event::with(['organisers'])->get();
       
         return inertia('Admin/Events/event',[
             'events' => $events,
-            'organisers' => Organiser::all()
+            'organisers' => Organiser::all(),
+           
+
 
             
         ]);
     }
+
+
     public function create(){
 
         $organisers = Organiser::all();

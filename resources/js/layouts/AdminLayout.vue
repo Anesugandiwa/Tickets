@@ -22,6 +22,14 @@ const menues = ref([
         path: route('organiser.index'),
         icon:"mdi-account-multiple",
         id: 2,
+    },
+    {
+        name: "Charts",
+        path: route('getChart'),
+        icon: "",
+        id:3,
+
+
     }
 
 

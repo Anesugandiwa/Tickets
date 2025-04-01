@@ -11,13 +11,13 @@ import AppSidebar from '@/components/AppSidebar.vue';
             
             <v-spacer></v-spacer>
             <InertiaLink :href="route('login')" class="mx-1">
-                <v-btn color="primary" variant="elevated" class="no-uppercase">
+                <v-btn color="success" variant="elevated" class="no-uppercase">
                     Login
                 </v-btn>
             </InertiaLink>
             
             <InertiaLink :href="route('register')" class="mx-1">
-                <v-btn color="primary" variant="elevated" class="no-uppercase">
+                <v-btn color="success" variant="elevated" class="no-uppercase">
                     Create Account
                 </v-btn>
             </InertiaLink>
