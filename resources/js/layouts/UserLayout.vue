@@ -11,18 +11,6 @@ const menues = ref([
         icon: "mdi-monitor-dashboard",
         id: 1,
     },
-    {
-        name: "Events",
-        path: route('event.index'),
-        icon: "mdi-calendar-text",
-        id: 22,
-    },
-    {
-        name: "Organisers",
-        path: route('organiser.index'),
-        icon:"mdi-account-multiple",
-        id: 2,
-    },
 
 
 
@@ -55,7 +43,7 @@ function logout() {
                    </div>
                 </div>
                 <v-divider />
-                <v-list-subheader class="my-3"> Admin Portal </v-list-subheader>
+                <v-list-subheader class="my-3"> User Portal </v-list-subheader>
 
                 <!--list-->
 
@@ -88,7 +76,7 @@ function logout() {
 
                                    <v-btn
                                         @click="logout()"
-                                       color="primary"
+                                       color="success"
                                        icon="mdi-location-exit"
                                        variant="elevated"
                                    />

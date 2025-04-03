@@ -23,13 +23,29 @@ Route::group([
     Route::resource('/organiser',OrganiserController::class);
     Route::resource('/tickets',TicketController::class);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/chart',[PagesController::class,'chart'])->name('getChart');
+   
 
 });
-// routes/web.php
+
+Route::get('/event/{slug}', function ($slug){
+
+    return Inertia::render('SingleEvent', [
+        'event' => \App\Models\Event::where('slug', $slug)
+            ->with(['tickets'])
+            ->first()
+    ]);
+
+})->name('single.event');
+
+Route::get('/cart-checkout', [PagesController::class, 'cart'])->name('cart');
+Route::get('/cart-add-remove/{item}',[PagesController::class,'addCart'])->name('card.add.remove');
+Route::get('/cart-remove/{item}',[PagesController::class,'cartRemove'])->name('cart.remove');
+
+// routes/web.php;
 
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/user.php';
 
 
