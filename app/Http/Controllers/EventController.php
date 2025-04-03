@@ -94,6 +94,13 @@ class EventController extends Controller
         ]);
 
     }
+    // public function show($id){
+    //     $event = Event::where('slug', $slug)->firstOrFail();
+
+    //     return inertia('Admin/Events/show', [
+    //         'event'=>$event
+    //     ]);
+    // }
     public function update(Request $request, $id){
 
         $request-> validate([

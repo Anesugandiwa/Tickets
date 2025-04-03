@@ -13,12 +13,14 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('dashboard', [DashboardController::class, 'index']
-    // return Inertia::render('Dashboard');
+    //  return Inertia::render('Dashboard');
 )->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group([
     'prefix' => 'admin',
+    'middleware' =>[App\Http\Middleware\isAdmin::class,]
 ], function(){
+    
     Route::resource('/event',EventController::class);
     Route::resource('/organiser',OrganiserController::class);
     Route::resource('/tickets',TicketController::class);

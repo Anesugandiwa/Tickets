@@ -15,4 +15,11 @@ class UserDashboardController extends Controller
         ]);
 
     }
+
+    public function show($slug){
+        $events = Event::where('slug',$slug)->firstOrFail();
+        return inertia('User/show',[
+            'event' => $events
+        ]);
+    }
 }
