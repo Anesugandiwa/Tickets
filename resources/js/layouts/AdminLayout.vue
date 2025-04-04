@@ -7,19 +7,19 @@ const drawer = ref(null)
 const menues = ref([
     {
         name: "Dashboard",
-        path: route('dashboard'),
+        path: route('admin.dashboard'),
         icon: "mdi-monitor-dashboard",
         id: 1,
     },
     {
         name: "Events",
-        path: route('event.index'),
+        path: route('admin.event.index'),
         icon: "mdi-calendar-text",
         id: 22,
     },
     {
         name: "Organisers",
-        path: route('organiser.index'),
+        path: route('admin.organiser.index'),
         icon:"mdi-account-multiple",
         id: 2,
     },

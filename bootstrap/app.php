@@ -6,6 +6,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use App\Http\Middleware\isAdmin;
+use App\Http\Middleware\isClient;
+use App\Http\Middleware\isOrganiser;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,6 +25,11 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
 
 
+        ]);
+        $middleware->alias([
+            'Admin' => isAdmin::class,
+            'client' => isClient::class,
+            'organiser' => isOrganiser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

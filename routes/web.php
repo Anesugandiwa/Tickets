@@ -18,6 +18,7 @@ Route::get('dashboard', [DashboardController::class, 'index']
 
 Route::group([
     'prefix' => 'admin',
+    'as'  => 'admin.',
     'middleware' =>[App\Http\Middleware\isAdmin::class,]
 ], function(){
     
