@@ -22,11 +22,22 @@ class DashboardController extends Controller
         ->perMonth()
         ->count();
 
+        $trnd = Trend::model(Organiser::class)
+        ->between(
+            start: now()->startOfYear(),
+            end: now()->endOfYear(),
+        )
+        ->perMonth()
+        ->count();
+
         return inertia('Dashboard', [
             'organisers' => Organiser::count(), 
             'events' => Event::count(),
             'labels' => $trend->map(fn ($item) => date('M', strtotime($item->date))),
-            'dataset' => $trend->map(fn (TrendValue $item) => $item->aggregate),       
+            'dataset' => $trend->map(fn (TrendValue $item) => $item->aggregate),
+            
+            'organiserLabels' => $trnd->map(fn ($item) => date('M', strtotime($item->date))),
+            'organiserDataset' => $trnd->map(fn (TrendValue $item) => $item->aggregate),
         ]);
     }
 }

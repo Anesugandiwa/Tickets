@@ -48,7 +48,7 @@ class OrganiserController extends Controller
 
         $organiser->save();
 
-        return redirect(route('organiser.index'));
+        return redirect(route('admin.organiser.index'));
     }
 
     public function show(Organiser $organiser)

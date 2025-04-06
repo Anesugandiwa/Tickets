@@ -60,7 +60,7 @@ const submitData =() =>{
         })
 
     }else{
-        form.post(route('organiser.store'),{
+        form.post(route('admin.organiser.store'),{
             onSuccess:() =>{
                 closeDialog()
                 Swal.fire('Success','Organiser Created successfully', 'success')
@@ -130,6 +130,11 @@ const deleteOrganiser = (organiser) => {
 
                 </v-card>
             </v-col>
+        </v-row>
+        <v-row class="mb-4">
+                <v-col>
+                    <Chart :labels="labels" :dataset="dataset" />
+                </v-col>
         </v-row>
         <v-dialog max-width="800" v-model="isDialogOpen">
             <v-card>

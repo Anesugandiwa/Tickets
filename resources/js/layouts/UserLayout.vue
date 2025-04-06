@@ -11,6 +11,12 @@ const menues = ref([
         icon: "mdi-monitor-dashboard",
         id: 1,
     },
+    {
+        name: "Payments",
+         
+        icon :"mdi-bank-transfer",
+        id: 2,
+    },
 
 
 

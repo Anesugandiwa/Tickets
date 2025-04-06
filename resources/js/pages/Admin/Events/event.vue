@@ -98,7 +98,7 @@ const submitForm =() =>{
 
         })
     } else {
-        form.post(route('event.store'), {
+        form.post(route('admin.event.store'), {
             onSuccess: () =>{
                 closeDialog()
                 Swal.fire('Success','Event Created successfully', 'success')

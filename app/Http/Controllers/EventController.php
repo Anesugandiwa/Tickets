@@ -68,7 +68,7 @@ class EventController extends Controller
         $event->location = $request->location;
         $event->total_tickets = $request->total_tickets;
         $event->is_priced = $request->is_priced;
-        $event->organisers =$request->organisers;
+       
 
     
         $event->save();
@@ -78,7 +78,7 @@ class EventController extends Controller
 
 
 
-        return redirect(route('event.index'));
+        return redirect(route('admin.event.index'));
 
 
 
