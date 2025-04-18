@@ -57,7 +57,7 @@ const errors = ref({
     is_priced: '',
     
 })
-// initializing the state of the DFialog
+// initializing the state of the Dialog
 const isDialogOpen = ref(false)
 const isEditing = ref(false)
 

@@ -81,7 +81,7 @@ function logout() {
                             <div>
 
                                    <v-btn
-                                        @click="logout()"
+                                       @click="logout()"
                                        color="success"
                                        icon="mdi-location-exit"
                                        variant="elevated"

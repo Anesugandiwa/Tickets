@@ -27,6 +27,9 @@ class EventController extends Controller
     }
 
 
+
+
+
     public function create(){
 
         $organisers = Organiser::all();
@@ -148,7 +151,7 @@ class EventController extends Controller
     {
 
         
-        $event->delete();
+        $teacher->delete();
 
         return redirect()->back()->with('message', [
             'type'        => 'success',
