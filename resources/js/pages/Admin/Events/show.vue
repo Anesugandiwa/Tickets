@@ -8,7 +8,7 @@
                 </v-toolbar-title>
                 <v-spacer />
 
-                <InertiaLink :href="route('event.index')">
+                <InertiaLink :href="route('admin.event.index')">
                     <v-btn   variant="flat" color="primary">
                         Back to Events
                     </v-btn>
@@ -62,7 +62,7 @@
                                                 class="rounded-lg glass"
                                                 cover
                                                 height="500"
-                                                :src="$page.props.event.preview_image"
+                                                :src="$page.props.event.preview_image_url"
                                                 alt="Event Image"
                                             />
                                         </v-col>
@@ -300,7 +300,7 @@ import {displayDate} from "../../../Composables/Dates.js";
                  }).then((result) => {
                      if (result.isConfirmed) {
 
-                         this.$inertia.visit(route('tickets.destroy', ticket), {
+                         this.$inertia.visit(route('admin.tickets.destroy', ticket), {
                              method: 'delete',
                              onSuccess:()=>{
                                  this.$swal.fire({

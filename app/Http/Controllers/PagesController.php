@@ -1,76 +1,77 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Binafy\LaravelCart\Facades\Cart;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Ticket;
 
+use Illuminate\Support\Facades\Session;
 class PagesController extends Controller
 {
-    //
-    public function cart(){
-        if(Auth::check()){
-            $items = \Cart::session(auth()->user()->id)->getContent();
-            $total=  \Cart::session(auth()->user()->id)->getTotal();
+    public function index(){
+        $cartItems = Session::get('cart_items', []);
+        $total = 0;
+        
+        foreach ($cartItems as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
 
-            return inertia('Checkout', [
-                'items' => $items,
-                "total" => $total
-            ]);
+    return Inertia::render('User/cart', [
+        'cartItems' => $cartItems,
+        'total' => $total,
+        'cartCount' => count($cartItems),
+    ]);
 
-        }else{
-            return redirect('/');
-        }
+
     }
     
-    public function addCart($id){
-        if (\Auth::check()){
-            $user = auth()->user();
-        } else{
-            $exists = User::where('email', visitor()->ip().'@customer.com')->first();
 
-            if($exists){
-                Auth::login($exists);
-            } else{
-                $user = new User();
 
-                $user->name = visitors()->browser().'_'.visitor()->platform();
-                $user->role = 'user';
-                $user->email = visitor()->ip().'@customer.com';
-                $user->email_verified_at = now();
-                $user->password           = Hash::make(now());
-                $user->save();
+ 
+    public function add(Request $request)
+    {
+     
+            
+            $ticketId = $request->input('ticket_id');
+            $ticket = Ticket::findOrFail($ticketId);
 
-                Auth::login($user);
+            
+            $cartItems = Session::get('cart_items', []);
 
+
+            if (isset($cartItems[$ticketId])) {
+               
+                $cartItems[$ticketId]['quantity'] += 1;
+                flash()->info('Ticket quantity updated in cart');
+            } else {
+                
+                $cartItems[$ticketId] = [
+                    'id' => $ticket->id,
+                    'name' => $ticket->name,
+                    'price' => $ticket->price,
+                    'quantity' => 1,
+                    'attributes' => [
+                        'image' => $ticket->image,
+                        
+                    ]
+                ];
+                flash()->success('ticket added to cart successfully');
             }
-        }
 
-        $eventTicket = \App\Models\Ticket::find($id);
-        $userId      =auth()->user()->id;
+           
 
-        \Cart::session($userId)->add(array(
-            'id'            =>$eventTicket->id,
-            'name'          =>$eventTicket->name,
-            'price'         =>$eventTicket->price ?: 0,
-            'quantity'      =>1,
-            'attributes'      => [
-                'event_title' => Event::find($eventTicket->event_id)['title']
-            ],
-            'associatedModel' => $eventTicket
 
-        ));
+            // Save cart back to session
+            Session::put('cart_items', $cartItems);
 
-        $optiontext = 'Do you want to checkout now?';
-        $optionRoute = route('cart');
+            return back();
 
-        return back()->with('messag', [
-            'title' =>'Ticket Added to cart Successfully',
-            'type'  =>'success',
-            'optiontext' => $optiontext,
-            'optionRoute' =>$optionRoute,
-        ]);
+      
     }
+
+
+
 
     public function cartRemove($id){
         \Cart::session(auth()->user()->id)->remove($id);

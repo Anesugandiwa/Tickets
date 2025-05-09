@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'
 const organisersList = ref([])
 onMounted(async () => {
     try {
-        const response = await axios.get(route('organisers.index')) 
+        const response = await axios.get(route('admin.organiser.index')) 
         organisersList.value = response.data
     } catch (error) {
         console.error('Error fetching organisers:', error)
@@ -87,7 +87,7 @@ function handleFileUpload(event) {
 const submitForm =() =>{
     
     if (isEditing.value) {
-        form.put(route('event.update', form.id), {
+        form.put(route('admin.event.update', form.id), {
             onSuccess: () => {
                 closeDialog()
                 Swal.fire('Success!', 'Event updated successfully.','success')
@@ -113,7 +113,7 @@ const submitForm =() =>{
 
 const deletEvent = (event) => {
     Swal.fire({
-        title: 'Are you sure you want to deletethis Event!',
+        title: 'Are you sure you want to delete this Event!',
         text: "You won't be able to revert this",
         icon:'warning',
         showCancelButton: true,
@@ -123,7 +123,7 @@ const deletEvent = (event) => {
 
     }).then((result)=> {
         if(result.isConfirmed){
-            form.delete(route('event.destroy', event.id), {
+            form.delete(route('admin.event.destroy', event.id), {
                 onSuccess: () => {
                     Swal.fire(
                         'Deleted!',
@@ -164,7 +164,7 @@ const editEvent = (event) =>{
 
 
 const viewEvent = (event) => {
-    router.visit(route('event.show', event.id));
+    router.visit(route('admin.event.show', event.id));
 }
 
 </script>

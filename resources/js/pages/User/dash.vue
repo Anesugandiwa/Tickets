@@ -13,6 +13,19 @@ const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
 };
+const addToCart = (event) => {
+    router.get(route('card.add.remove', event.id), {
+        event_id: event.id,
+        title: event.title,
+        price: event.price ?? 0, // default if price is not set
+    }, {
+        preserveScroll: true,
+        onSuccess: () => {
+            // Optionally show a success message
+            console.log('Event added to cart!');
+        }
+    });
+};
 </script>
 
 <template>
@@ -26,6 +39,7 @@ const formatDate = (dateString) => {
                     </v-card>
                 </v-col>
             </v-row>
+
 
             <v-row v-if="events.length === 0">
                 <v-col cols="12">
@@ -58,10 +72,25 @@ const formatDate = (dateString) => {
                             <InertiaLink :href="route('client.allEvents',  event.slug)">
                                 <v-btn color="primary" variant="text" prepend-icon="mdi-information"> Details </v-btn>
                             </InertiaLink>
+                            <div class="d-flex">
+                                <InertiaLink :href="route('tickets.for-event', event.id)">
+                                <v-btn 
+                                    color="info" 
+                                    variant="tonal" 
+                                    prepend-icon="mdi-ticket-outline"
+                                    class="mr-2"
+                                   
+                                >
+                                    View Tickets
+                                </v-btn>
+                                </InertiaLink>
+                            </div>
 
-                            <v-btn color="secondary" variant="tonal" prepend-icon="mdi-ticket" @click="router.visit(`/events/${event.id}/register`)">
+
+                            <!-- <v-btn color="secondary" variant="tonal" prepend-icon="mdi-ticket" @click="addToCart(event)">
                                 Add to Cart
-                            </v-btn>
+                            </v-btn> -->
+                            <!--  //"router.visit(`/events/${event.id}/register`)" -->
                         </v-card-actions>
                     </v-card>
                 </v-col>

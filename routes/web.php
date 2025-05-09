@@ -7,6 +7,8 @@ use App\Http\Controllers\OrganiserController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CartController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -43,8 +45,14 @@ Route::get('/event/{slug}', function ($slug){
 Route::get('/cart-checkout', [PagesController::class, 'cart'])->name('cart');
 Route::get('/cart-add-remove/{item}',[PagesController::class,'addCart'])->name('card.add.remove');
 Route::get('/cart-remove/{item}',[PagesController::class,'cartRemove'])->name('cart.remove');
+Route::get('/cart',[PagesController::class,'index'])->name('view_cart');
 
-// routes/web.php;
+Route::post('/cart/add', [PagesController::class, 'add'])->name('cart.add');
+
+
+// view each ticket from the event
+Route::get('/events/{event}/tickets', [TicketController::class, 'forEvent'])
+     ->name('tickets.for-event');
 
 
 require __DIR__.'/settings.php';

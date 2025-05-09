@@ -21,26 +21,26 @@ class EventController extends Controller
        
         
     }
-//     public function getOrganiser($eventId)
-//     {
-//         $event = Event::with('organiser')->findOrFail($eventId);
+    public function getOrganiser($eventId)
+    {
+        $event = Event::with('organiser')->findOrFail($eventId);
         
-//         if (!$event->organiser) {
-//             return response()->json([
-//                 'message' => 'No organiser found for this event.'
-//             ], 404);
-//         }
+        if (!$event->organiser) {
+            return response()->json([
+                'message' => 'No organiser found for this event.'
+            ], 404);
+        }
         
-//         return response()->json([
-//             'organiser' => [
-//             'name' => $event->organiser->name,
-//             'email' => $event->organiser->email,
-//             'phone' => $event->organiser->phone_number,
-//             'organization' => $event->organiser->organization_name,
-//             'profile_image' => $event->organiser->profile_image,
-//         ],
-//     ]);
-// }
+        return response()->json([
+            'organiser' => [
+            'name' => $event->organiser->name,
+            'email' => $event->organiser->email,
+            'phone' => $event->organiser->phone_number,
+            'organization' => $event->organiser->organization_name,
+            'profile_image' => $event->organiser->profile_image,
+        ],
+    ]);
+}
 
     /**
      * Store a newly created resource in storage.

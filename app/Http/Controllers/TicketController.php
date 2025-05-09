@@ -4,12 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ticket;
+use App\Models\Event;
 
 
 class TicketController extends Controller
 {
     //
-    public function index(){
+    // public function index(){
+
+        public function forEvent(Event $event)
+        {
+            $tickets = $event->tickets()
+            ->where('total_available', '>', 0)
+            ->get(['id', 'name', 'price', 'total_available', 'image']);
+            
+            return inertia('User/viewTickets', [
+                'tickets' => $tickets,
+                'event_id' => $event->id
+            ]);
 
         
     }

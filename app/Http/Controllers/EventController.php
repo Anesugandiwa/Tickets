@@ -151,7 +151,7 @@ class EventController extends Controller
     {
 
         
-        $teacher->delete();
+        $event->delete();
 
         return redirect()->back()->with('message', [
             'type'        => 'success',

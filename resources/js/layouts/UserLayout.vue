@@ -17,6 +17,12 @@ const menues = ref([
         icon :"mdi-bank-transfer",
         id: 2,
     },
+    {
+        name: "view Cart",
+         path: route('view_cart'),
+        icon :"mdi-bank-transfer",
+        id: 3,
+    },
 
 
 

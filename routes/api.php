@@ -15,4 +15,4 @@ use App\Http\Controllers\Api\EventController;
 
 Route::get('/events', [\App\Http\Controllers\Api\EventController::class,'apiIndex']);
 // Route::get('/events/{id}/organiser', [\App\Http\Controllers\Api\EventController::class,'getOrganiser']);
-Route::get('/events/{id}', [App\Http\Controllers\Api\EventController::class, 'show']);
+Route::get('/event/{id}', [App\Http\Controllers\Api\EventController::class, 'getOrganiser']);

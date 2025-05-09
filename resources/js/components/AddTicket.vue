@@ -96,7 +96,7 @@ export default {
     methods:{
 
         addTicket(){
-             this.form.post(route('tickets.store'),{
+             this.form.post(route('admin.tickets.store'),{
                  onSuccess:()=>{
                      this.form.reset();
                      this.dialog=false;
