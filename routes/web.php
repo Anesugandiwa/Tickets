@@ -54,6 +54,12 @@ Route::post('/cart/add', [PagesController::class, 'add'])->name('cart.add');
 Route::get('/events/{event}/tickets', [TicketController::class, 'forEvent'])
      ->name('tickets.for-event');
 
+// Payments Routes
+
+Route::post('/make-payment',[PagesController::class, 'initiatePayment'])->name('make-payment');
+Route::post('/check-payment',[PagesController::class,'pesePayReturn'])->name('pese-return');
+
+
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
