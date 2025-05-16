@@ -71,4 +71,14 @@ class TicketController extends Controller
             'title'       => 'Ticket Deleted',
         ]);
     }
+
+    public function getTicketsForEvent(Event $event){
+        $tickets = $event->tickets()
+            ->where('total_available', '>', 0)
+            ->get(['id','name', 'price',]);
+        return response()->json([
+            'event_id' =>$event->id,
+            'tickets' => $tickets,
+        ]);
+    }
 }

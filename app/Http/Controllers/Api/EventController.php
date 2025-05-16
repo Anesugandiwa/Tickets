@@ -42,6 +42,39 @@ class EventController extends Controller
     ]);
 }
 
+public function peseApiReturn(Request $request){
+    $pesepay = new Pesepay(
+        "34bebfa7-ac62-4f7d-a4fc-5231b288d3a4",
+        "69df0e53d55748a79bc5cc9ba9e614db"
+    );
+
+    $response =  $pesepay->checkPayment($request->ref_num);
+
+    if ($response->success()){
+        if ($response->paid()){
+            $paymen = Payment::where('referenceNumber', $request->ref_num)->first();
+            $paymen->is_paid = 1;
+            $paymen->save();
+
+            return response()->json([
+                    'status'      => 'success',
+                    'message'     =>  'Payment Successfully. Please wait for your Ticket. Your reference no is: '.$request->ref_num
+                ]);
+        } else {
+            return response()->json([
+                'status' => 'pending',
+                'message' => 'pending please wait',
+            ]);
+        } 
+    } else{
+        return response()->json([
+            'status' => 'failed',
+            'message' => $response->message(),
+        ]);
+    }
+
+}
+
     /**
      * Store a newly created resource in storage.
      */

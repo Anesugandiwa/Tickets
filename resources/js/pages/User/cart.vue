@@ -183,7 +183,7 @@ const markAsFailed = () => {
           <v-form @submit.prevent="makePayment">
             <v-text-field
               v-model="paynowForm.customerPhoneNumber"
-              label="EcoCash Phone Number"
+              label="EcoCash or OneMoney Phone Number"
               placeholder="07XXXXXXXX"
               :rules="rules.customerPhoneNumber"
               prepend-icon="mdi-phone"
