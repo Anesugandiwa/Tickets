@@ -60,11 +60,11 @@ const makePayment = async () => {
   try {
     const response = (await axios.post(route('make-payment'), paynowForm)).data;
 
-    if (response.status === 'error') {
+    if (response.status === 'failed') {
       Swal.fire({
         icon: 'error',
-        title: response.message,
-        text: response.reason,
+        title: 'Payment Error',
+        text: response.message || 'Something went wrong.',
       });
       return;
     }
